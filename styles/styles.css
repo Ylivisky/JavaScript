@@ -8,6 +8,7 @@ body{
     flex-direction: column;
     justify-content: space-between;
     min-height: 100vh;
+    font-family: Arial, sans-serif;
 }
 
 header{
@@ -17,14 +18,43 @@ header{
     justify-content: center;
     align-items: center;
     padding: 50px;
+    text-align: center;
 }
 
+header .btn {
+    margin-left: 20px;
+}
+
+main {
+    padding: 20px;
+}
+
+.card {
+    text-align: center;
+}
+
+.cart-total {
+    font-size: 1.2em;
+    font-weight: bold;
+}
+
+.card-img-top {
+    height: 400px;
+}
+
+.card-img {
+    height: 150px;
+    object-fit: contain;
+}
+
+
 footer{
-    background-color: #000;
-    color: #fff;
     display: flex;
     justify-content: center;
     align-items: center;
     margin-top: auto;
     padding: 20px;
+}
+footer p{
+    margin: 0;
 }

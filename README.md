@@ -1,2 +1,2 @@
 # JavaScript
-1. Trate de ocupar todo lo visto hasta el momento en este simulador de prestamos! :D
+1. Realice un carrito de compras sobre productos de computacion :D

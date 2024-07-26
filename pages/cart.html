@@ -3,25 +3,26 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Tienda de Componentes de Computadores</title>
+    <title>Carrito de Compras</title>
     <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
-    <link rel="stylesheet" href="./styles/styles.css">
+    <link rel="stylesheet" href="../styles/styles.css">
 </head>
 <body>
     <header class="bg-dark text-white p-3">
         <div class="container">
-            <h1 class="h3">Tienda de Componentes de Computadores</h1>
-            <a href="./pages/cart.html" class="btn btn-light">Ver Carrito</a>
+            <h1 class="h3">Carrito de Compras</h1>
+            <a href="../index.html" class="btn btn-light">Volver a la Tienda</a>
         </div>
     </header>
     <main class="container mt-4">
-        <div class="row" id="product-list">
-            <!-- Los productos van a estar aca dinámicamente -->
+        <div class="cart-items"></div>
+        <div class="cart-total mt-3">
+            <p>Total: $<span id="total"></span></p>
         </div>
     </main>
     <footer class="bg-dark text-white">
         <p>Matias Ylivisky - Comision N°71345</p>
     </footer>
-    <script src="./js/main.js"></script>
+    <script src="../js/main.js"></script>
 </body>
 </html>
