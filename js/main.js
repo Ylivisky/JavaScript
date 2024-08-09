@@ -2,7 +2,7 @@
 // <---------------- 1era preentrega ---------------->
 
 //mensaje de bienvenida
-/* 
+/*
 alert("Bienvenido a tu simulador de prestamos de confianza\nEl interes mensual que manejamos es del 4% y aceptamos hasta 60 meses")
 
 let edad = parseInt(prompt("ingrese su edad:"));
@@ -26,7 +26,7 @@ function cuotasPrestamo(capital, meses, interesMensual){
 };
 */
 
-// <---------------- 2da preentrega ----------------> 
+// <---------------- 2da preentrega ---------------->
 // Función para crear un nuevo libro
 /*
 function createBook() {
@@ -67,20 +67,11 @@ addBooks();
 showBooks();
 */
 
-// <---------------- 3era preentrega ----------------> 
-// Lista de productos 
-const products = [
-    { id: 1, name: "Procesador Intel i3", price: 160000, image: "https://http2.mlstatic.com/D_NQ_NP_671623-MLA54687847194_032023-O.webp"},
-    { id: 2, name: "Procesador Intel i5", price: 230000, image: "https://http2.mlstatic.com/D_NQ_NP_859509-MLU73213842167_122023-O.webp"},
-    { id: 3, name: "Procesador Intel i7", price: 400000, image: "https://http2.mlstatic.com/D_NQ_NP_960803-MLU70044930468_062023-O.webp"},
-    { id: 4, name: "Tarjeta Gráfica NVIDIA GTX 1080", price: 330000, image: "https://http2.mlstatic.com/D_NQ_NP_928140-MLB25873293517_082017-O.webp"},
-    { id: 5, name: "Tarjeta Gráfica NVIDIA RTX 2080", price: 620000, image: "https://http2.mlstatic.com/D_NQ_NP_869238-MLU54957418809_042023-O.webp"},
-    { id: 6, name: "Tarjeta Gráfica NVIDIA RTX 3080", price: 980000, image: "https://http2.mlstatic.com/D_NQ_NP_748274-MLU74977413814_032024-O.webp"},
-    { id: 7, name: "Tarjeta Gráfica NVIDIA RTX 4080", price: 2200000, image: "https://http2.mlstatic.com/D_NQ_NP_782697-MLU69821067861_062023-O.webp"}
-    
-];
+// <---------------- 3era preentrega ---------------->
+// Lista de productos
+let products = [];
 
-// Array para el carrito 
+// Array para el carrito
 let cart = [];
 
 // Funcion para generar las cartas de la pagina principal
@@ -99,13 +90,31 @@ function generateProductHTML(product) {
     `;
 }
 
-// Funcion para cargar las cartas de los productos en la pagina principal DOM
+// Funcion para para traer los datos del JSON con validaciones
 function loadProducts() {
+    fetch('json/products.json')
+        .then(response => {
+            if (!response.ok) {
+                throw new Error('Error al cargar los productos');
+            }
+            return response.json();
+        })
+        .then(data => {
+            products = data;
+            renderProducts();
+        })
+        .catch(error => {
+            console.error('Hubo un problema con la carga de productos:', error);
+        });
+}
+
+// Funcion para cargar las cartas de los productos en la pagina principal DOM
+function renderProducts() {
     const productList = document.getElementById('product-list');
     productList.innerHTML = products.map(product => generateProductHTML(product)).join('');
 }
 
-// Función para agregar un producto al carrito de compras
+// Funcion para agregar un producto al carrito de compras
 function addToCart(productId) {
     const product = products.find(p => p.id === productId);
     const existingProduct = cart.find(item => item.id === productId);
@@ -115,25 +124,41 @@ function addToCart(productId) {
         cart.push({ ...product, quantity: 1 });
     }
     localStorage.setItem('cart', JSON.stringify(cart));
+
+    Toastify({
+        text: "Se ha agregado al carrito!",
+        duration: 2000,
+        close: true,
+        gravity: "top",
+        position: "right",
+        stopOnFocus: false,
+        style: {
+        background: "linear-gradient(to right, #00b09b, #96c93d)",
+        }
+    }).showToast();
+
+    updateCartCount()
 }
 
-// Función para cargar el carrito desde el almacenamiento local y renderizarlo
+// Funcion para cargar el carrito desde el almacenamiento local y renderizarlo
 function loadCart() {
     const storedCart = localStorage.getItem('cart');
     if (storedCart) {
         cart = JSON.parse(storedCart);
     }
-    renderCart();
+    if (document.querySelector('.cart-items')) {
+        renderCart();
+    }
+    updateCartCount();
 }
 
-// Función para renderizar el carrito de compras en la pagina del carrito DOM
+
+// Funcion para renderizar el carrito de compras en la pagina del carrito DOM
 function renderCart() {
     const cartItemsContainer = document.querySelector('.cart-items');
     const totalElement = document.getElementById('total');
     cartItemsContainer.innerHTML = '';
-
     let total = 0;
-
     cart.forEach(item => {
         const itemElement = document.createElement('div');
         itemElement.className = 'card mb-3';
@@ -145,7 +170,10 @@ function renderCart() {
                 <div class="col-md-8">
                     <div class="card-body">
                         <h5 class="card-title">${item.name} - $${item.price} x ${item.quantity}</h5>
-                        <button class="btn btn-danger" onclick="removeFromCart(${item.id})">Eliminar</button>
+                        <div class="d-flex justify-content-center align-items-center">
+                            <input type="number" id="quantity-${item.id}" class="form-control w-25 mr-2" value="1" min="1" max="${item.quantity}">
+                            <button class="btn btn-danger" onclick="removeFromCart(${item.id})">Eliminar</button>
+                        </div>
                     </div>
                 </div>
             </div>
@@ -153,22 +181,57 @@ function renderCart() {
         cartItemsContainer.appendChild(itemElement);
         total += item.price * item.quantity;
     });
-
     totalElement.textContent = total.toFixed(2);
 }
 
-// Función para eliminar un ítem del carrito
+// Funcion para eliminar un ítem del carrito
 function removeFromCart(productId) {
-    cart = cart.filter(item => item.id !== productId);
-    localStorage.setItem('cart', JSON.stringify(cart));
-    renderCart();
+    const quantityInput = document.getElementById(`quantity-${productId}`);
+    const quantityToRemove = parseInt(quantityInput.value);
+    const item = cart.find(item => item.id === productId);
+    if (item) {
+        if (item.quantity > quantityToRemove) {
+            item.quantity -= quantityToRemove;
+        } else {
+            cart = cart.filter(item => item.id !== productId);
+        }
+        localStorage.setItem('cart', JSON.stringify(cart));
+        renderCart();
+        updateCartCount();
+    }
 }
 
-// Event listener para cargar productos o el carrito cuando se carga la página
+// Event listener para cargar productos o el carrito cuando se carga la pagina
 document.addEventListener('DOMContentLoaded', () => {
     if (document.getElementById('product-list')) {
         loadProducts();
     } else if (document.querySelector('.cart-items')) {
         loadCart();
     }
+});
+
+// Funcion para mostrar la cantidad de elementos del carrito (lo actualiza)
+function updateCartCount() {
+    const cartCountElement = document.getElementById('cart-count');
+    const itemCount = cart.reduce((total, item) => total + item.quantity, 0);
+    cartCountElement.textContent = itemCount;
+
+    // Aca tambien agregue para que cambie el icono dependiendo si esta lleno o no
+    const cartIconElement = document.getElementById('cart-icon');
+    if (itemCount > 0) {
+        cartIconElement.classList.remove('bi-minecart');
+        cartIconElement.classList.add('bi-minecart-loaded');
+    } else {
+        cartIconElement.classList.remove('bi-minecart-loaded');
+        cartIconElement.classList.add('bi-minecart');
+    }
+}
+
+// Llamo a la funcion para cargar los productos y que el contador se actualice en cualquier pagina
+document.addEventListener('DOMContentLoaded', () => {
+    loadCart(); 
+    if (document.getElementById('product-list')) {
+        loadProducts();
+    }
+    updateCartCount(); 
 });

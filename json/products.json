@@ -1,0 +1,9 @@
+[
+    { "id": 1, "name": "Procesador Intel i3", "price": 160000, "image": "https://http2.mlstatic.com/D_NQ_NP_671623-MLA54687847194_032023-O.webp"},
+    { "id": 2, "name": "Procesador Intel i5", "price": 230000, "image": "https://http2.mlstatic.com/D_NQ_NP_859509-MLU73213842167_122023-O.webp"},
+    { "id": 3, "name": "Procesador Intel i7", "price": 400000, "image": "https://http2.mlstatic.com/D_NQ_NP_960803-MLU70044930468_062023-O.webp"},
+    { "id": 4, "name": "Tarjeta Gráfica NVIDIA GTX 1080", "price": 330000, "image": "https://http2.mlstatic.com/D_NQ_NP_928140-MLB25873293517_082017-O.webp"},
+    { "id": 5, "name": "Tarjeta Gráfica NVIDIA RTX 2080", "price": 620000, "image": "https://http2.mlstatic.com/D_NQ_NP_869238-MLU54957418809_042023-O.webp"},
+    { "id": 6, "name": "Tarjeta Gráfica NVIDIA RTX 3080", "price": 980000, "image": "https://http2.mlstatic.com/D_NQ_NP_748274-MLU74977413814_032024-O.webp"},
+    { "id": 7, "name": "Tarjeta Gráfica NVIDIA RTX 4080", "price": 2200000, "image": "https://http2.mlstatic.com/D_NQ_NP_782697-MLU69821067861_062023-O.webp"}
+]
