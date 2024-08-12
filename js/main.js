@@ -201,15 +201,6 @@ function removeFromCart(productId) {
     }
 }
 
-// Event listener para cargar productos o el carrito cuando se carga la pagina
-document.addEventListener('DOMContentLoaded', () => {
-    if (document.getElementById('product-list')) {
-        loadProducts();
-    } else if (document.querySelector('.cart-items')) {
-        loadCart();
-    }
-});
-
 // Funcion para mostrar la cantidad de elementos del carrito (lo actualiza)
 function updateCartCount() {
     const cartCountElement = document.getElementById('cart-count');
@@ -227,11 +218,10 @@ function updateCartCount() {
     }
 }
 
-// Llamo a la funcion para cargar los productos y que el contador se actualice en cualquier pagina
+// Llamo a la funcion para cargar los productos o carrito y que actualice el contador de elementos al cargar la página
 document.addEventListener('DOMContentLoaded', () => {
-    loadCart(); 
+    loadCart();
     if (document.getElementById('product-list')) {
         loadProducts();
     }
-    updateCartCount(); 
 });
